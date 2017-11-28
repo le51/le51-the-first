@@ -174,6 +174,20 @@ class Simple extends ProjectBuilder
     }
 
     /**
+     * Create IndexController
+     *
+     * @return $this
+     */
+    private function createIndexController()
+    {
+        $getFile = $this->options->get('templatePath') . '/project/simple/IndexController.php';
+        $putFile = $this->options->get('projectPath') . 'app/controllers/IndexController.php';
+        $this->generateFile($getFile, $putFile, $this->options->get('name'));
+
+        return $this;
+    }
+
+    /**
      * Create ControllerBase
      *
      * @return $this
@@ -228,11 +242,12 @@ class Simple extends ProjectBuilder
             ->createConfig()
             ->createBootstrapFiles()
             ->createHtaccessFiles()
+            ->createIndexController()
             ->createControllerBase()
             ->createControllerAdmin()
             ->createIndexViewFiles()
             ->createAdminLayoutViewFile()
-            ->createControllerFile()
+            //->createControllerFile()
             ->createHtrouterFile();
 
         $this->options->contains('enableWebTools') && Tools::install($this->options->get('projectPath'));
