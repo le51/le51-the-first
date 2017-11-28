@@ -20,6 +20,13 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="controllerBaseClass" class="col-sm-2 control-label">Controller's Base Class</label>
+                        <div class="col-sm-10">
+                            {{ input("controllerBaseClass", 'default ControllerBase') }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label for="schema" class="col-sm-2 control-label">Schema</label>
                         <div class="col-sm-10">
                             {{ input("schema", "Database name") }}

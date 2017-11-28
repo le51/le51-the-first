@@ -66,6 +66,7 @@ class ScaffoldController extends Base
                     'templatePath'      => $this->request->getPost('templatesPath', 'string'),
                     'templateEngine'    => $this->request->getPost('templateEngine', 'string'),
                     'modelsNamespace'   => $this->request->getPost('modelsNamespace', 'string'),
+                    'controllerBaseClass'   => $this->request->getPost('controllerBaseClass', 'string'),
                 ]);
 
                 $scaffoldBuilder->build();
