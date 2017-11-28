@@ -217,36 +217,37 @@ class Scaffold extends Component
         // Build Controller
         $this->_makeController();
 
-        if ($this->options->get('templateEngine') == 'volt') {
-            // View layouts
-            $this->_makeLayoutsVolt();
+        if ($this->options->get('templateEngine') == 'phtml') {
+          // View layouts
+          $this->_makeLayouts();
 
-            // View index.phtml
-            $this->makeViewVolt('index');
+          // View index.phtml
+          $this->makeView('index');
 
-            // View search.phtml
-            $this->_makeViewSearchVolt();
+          // View search.phtml
+          $this->_makeViewSearch();
 
-            // View new.phtml
-            $this->makeViewVolt('new');
+          // View new.phtml
+          $this->makeView('new');
 
-            // View edit.phtml
-            $this->makeViewVolt('edit');
+          // View edit.phtml
+          $this->makeView('edit');
+
         } else {
-            // View layouts
-            $this->_makeLayouts();
+          // View layouts
+          $this->_makeLayoutsVolt();
 
-            // View index.phtml
-            $this->makeView('index');
+          // View index.phtml
+          $this->makeViewVolt('index');
 
-            // View search.phtml
-            $this->_makeViewSearch();
+          // View search.phtml
+          $this->_makeViewSearchVolt();
 
-            // View new.phtml
-            $this->makeView('new');
+          // View new.phtml
+          $this->makeViewVolt('new');
 
-            // View edit.phtml
-            $this->makeView('edit');
+          // View edit.phtml
+          $this->makeViewVolt('edit');
         }
 
         return true;
@@ -370,6 +371,51 @@ class Scaffold extends Component
      *
      * @return string
      */
+    private function _makeThCellVolt($attribute, $dataType, $relationField, $selectDefinition)
+    {
+        $id = 'field' . Text::camelize($attribute);
+
+        $code = '<th>' . PHP_EOL ;
+        if (isset($relationField[$attribute])) {
+            $code .= "\t\t" . '{{ select("' . $attribute . '", ' . $selectDefinition[$attribute]['varName'] .
+                ', "using" :[ "' . $selectDefinition[$attribute]['primaryKey'] . ',' . $selectDefinition[$attribute]['detail'] . '", "useDummy" => true], "class" : "form-control", "id" : "' . $id . '") }}';
+        } else {
+            switch ($dataType) {
+                case 5: // enum
+                    $code .= "\t\t" . '{{ select_static("' . $attribute . '", "using": [], "class" : "form-control", "id" : "' . $id . '") }}';
+                    break;
+                case Column::TYPE_CHAR:
+                    $code .= "\t\t" . '{{ text_field("' . $attribute . '", "class" : "form-control", "id" : "' . $id . '", "placeholder" :"' . $this->_getPossibleLabel($attribute) .'") }}';
+                    break;
+                case Column::TYPE_DECIMAL:
+                case Column::TYPE_INTEGER:
+                    $code .= "\t\t" . '{{ text_field("' . $attribute . '", "type" : "numeric", "class" : "form-control", "id" : "' . $id . '", "placeholder" :"' . $this->_getPossibleLabel($attribute) .'") }}';
+                    break;
+                case Column::TYPE_DATE:
+                    $code .= "\t\t" . '{{ text_field("' . $attribute . '", "type" : "date", "class" : "form-control", "id" : "' . $id . '", "placeholder" :"' . $this->_getPossibleLabel($attribute) .'") }}';
+                    break;
+                case Column::TYPE_TEXT:
+                    $code .= "\t\t" . '{{ text_area("' . $attribute . '", "cols": "30", "rows": "4", "class" : "form-control", "id" : "' . $id . '", "placeholder" :"' . $this->_getPossibleLabel($attribute) .'") }}';
+                    break;
+                default:
+                    $code .= "\t\t" . '{{ text_field("' . $attribute . '", "size" : 30, "class" : "form-control", "id" : "' . $id . '", "placeholder" :"' . $this->_getPossibleLabel($attribute) .'") }}';
+                    break;
+            }
+        }
+
+        $code .= '</th>' . PHP_EOL . PHP_EOL;
+
+        return str_replace("\t", '    ', $code);
+    }
+
+    /**
+     * @param $attribute
+     * @param $dataType
+     * @param $relationField
+     * @param $selectDefinition
+     *
+     * @return string
+     */
     private function _makeFieldVolt($attribute, $dataType, $relationField, $selectDefinition)
     {
         $id = 'field' . Text::camelize($attribute);
@@ -455,7 +501,7 @@ class Scaffold extends Component
                 continue;
             }
 
-            $code .= $this->_makeFieldVolt($attribute, $dataType, $relationField, $selectDefinition);
+            $code .= $this->_makeThCellVolt($attribute, $dataType, $relationField, $selectDefinition);
         }
 
         return $code;
@@ -687,10 +733,41 @@ class Scaffold extends Component
             throw new BuilderException(sprintf('Template "%s" does not exist.', $templatePath));
         }
 
+        $headerCode = '';
+        foreach ($this->options->get('attributes') as $attribute) {
+            $headerCode .= "\t\t\t" . '<th>' . $this->_getPossibleLabel($attribute) . '</th>' . PHP_EOL;
+        }
+
+        $rowCode = '';
+        $this->options->offsetSet('allReferences', array_merge($this->options->get('autocompleteFields')->toArray(), $this->options->get('selectDefinition')->toArray()));
+        foreach ($this->options->get('dataTypes') as $fieldName => $dataType) {
+            $rowCode .= "\t\t\t" . '<td>{{ ';
+            if (!isset($this->options->get('allReferences')[$fieldName])) {
+                if ($this->options->contains('genSettersGetters')) {
+                    $rowCode .= Utils::lowerCamelizeWithDelimiter($this->options->get('singular'), '-', true) . '.get' . Text::camelize($fieldName) . '()';
+                } else {
+                    $rowCode .= $this->options->get('singular') . '.' . $fieldName;
+                }
+            } else {
+                $detailField = ucfirst($this->options->get('allReferences')[$fieldName]['detail']);
+                $rowCode .= $this->options->get('singular') . '.get' . $this->options->get('allReferences')[$fieldName]['tableName'] . '().get' . $detailField . '()';
+            }
+            $rowCode .= ' }}</td>' . PHP_EOL;
+        }
+
+        $idField = $this->options->get('attributes')[0];
+        if ($this->options->contains('genSettersGetters')) {
+            $idField = 'get' . Text::camelize($this->options->get('attributes')[0]) . '()';
+        }
+
         $code = file_get_contents($templatePath);
 
         $code = str_replace('$plural$', $this->options->get('plural'), $code);
         $code = str_replace('$captureFields$', self::_makeFieldsVolt($type), $code);
+        $code = str_replace('$headerColumns$', $headerCode, $code);
+        $code = str_replace('$rowColumns$', $rowCode, $code);
+        $code = str_replace('$singularVar$', Utils::lowerCamelizeWithDelimiter($this->options->get('singular'), '-', true), $code);
+        $code = str_replace('$pk$', $idField, $code);
 
         if ($this->isConsole()) {
             echo $viewPath, PHP_EOL;

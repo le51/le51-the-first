@@ -11,7 +11,57 @@ class $className$Controller extends $controllerBaseClass$
      */
     public function indexAction()
     {
-        $this->persistent->parameters = null;
+      $numberPage = 1;
+        if ($this->request->isPost()) {
+            $query = Criteria::fromInput($this->di, '$fullyQualifiedModelName$', $_POST);
+            $this->persistent->parameters = $query->getParams();
+            if($this->request->getPost('limit'))
+                {$limit = $this->request->getPost('limit');}
+            else $limit = 10;
+            $this->persistent->limit = $limit;
+        } elseif ($this->request->getQuery("page", "int")) {
+            $numberPage = $this->request->getQuery("page", "int");
+        }
+        else {
+            $this->persistent->parameters = null;
+            $this->persistent->limit = 10;
+        }
+
+        if ($this->persistent->limit) {
+            $limit = $this->persistent->limit;
+        }
+
+        $parameters = $this->persistent->parameters;
+        if (!is_array($parameters)) {
+            $parameters = [];
+        }
+        $parameters["order"] = "$pk$";
+
+        $pluralVar$ = $className$::find($parameters);
+        if (count($pluralVar$) == 0) {
+            $this->flash->notice("The search did not find any $plural$");
+
+            $this->dispatcher->forward([
+                "controller" => "$plural$",
+                "action" => "index"
+            ]);
+
+            return;
+        }
+
+
+      $paginator = new Paginator([
+          'data' => $pluralVar$,
+          'limit'=> $limit,
+          'page' => $numberPage
+      ]);
+
+      $this->view->page = $paginator->getPaginate();
+      $bind = $this->persistent->parameters['bind'];
+      foreach ($bind as $key => $value) {
+        $this->tag->setDefault($key, trim($value,"%"));
+      }
+      $this->tag->setDefault("limit", $limit);
     }
 
     /**
