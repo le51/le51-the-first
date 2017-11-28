@@ -487,7 +487,7 @@ class Scaffold extends Component
      *
      * @return string
      */
-    private function _makeFieldsVolt($action)
+    private function _makeHeaderVolt($action)
     {
         $entity             = $this->options->get('entity');
         $relationField      = $this->options->get('relationField');
@@ -502,6 +502,31 @@ class Scaffold extends Component
             }
 
             $code .= $this->_makeThCellVolt($attribute, $dataType, $relationField, $selectDefinition);
+        }
+
+        return $code;
+    }
+
+    /**
+     * @param $action
+     *
+     * @return string
+     */
+    private function _makeFieldsVolt($action)
+    {
+        $entity             = $this->options->get('entity');
+        $relationField      = $this->options->get('relationField');
+        $autocompleteFields = $this->options->get('autocompleteFields');
+        $selectDefinition   = $this->options->get('selectDefinition')->toArray();
+        $identityField      = $this->options->get('identityField');
+
+        $code = '';
+        foreach ($this->options->get('dataTypes') as $attribute => $dataType) {
+            if (($action == 'new' || $action == 'edit') && $attribute == $identityField) {
+                continue;
+            }
+
+            $code .= $this->_makeFieldVolt($attribute, $dataType, $relationField, $selectDefinition);
         }
 
         return $code;
@@ -656,7 +681,7 @@ class Scaffold extends Component
                 $code .= '{{ stylesheet_link("themes/base") }}'.PHP_EOL;
                 $code .= '<div class="ui-layout" align="center">' . PHP_EOL;
             } else {
-                $code .= '<div class="container">' . PHP_EOL;
+                $code .= '<div class="">' . PHP_EOL;
             }
 
             $code .= "\t" . '{{ content() }}' . PHP_EOL . '</div>';
@@ -764,6 +789,7 @@ class Scaffold extends Component
 
         $code = str_replace('$plural$', $this->options->get('plural'), $code);
         $code = str_replace('$captureFields$', self::_makeFieldsVolt($type), $code);
+        $code = str_replace('$searchHeader$', self::_makeHeaderVolt($type), $code);
         $code = str_replace('$headerColumns$', $headerCode, $code);
         $code = str_replace('$rowColumns$', $rowCode, $code);
         $code = str_replace('$singularVar$', Utils::lowerCamelizeWithDelimiter($this->options->get('singular'), '-', true), $code);

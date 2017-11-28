@@ -21,7 +21,7 @@
       <table class="table table-bordered">
           <thead>
               <tr>
-      $captureFields$
+      $searchHeader$
                   <th></th>
                   <th></th>
               </tr>
