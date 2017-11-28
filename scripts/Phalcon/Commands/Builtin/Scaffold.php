@@ -52,6 +52,7 @@ class Scaffold extends Command
             'trace'             => 'Shows the trace of the framework in case of exception [optional]',
             'ns-models=s'       => "Model's namespace [optional]",
             'ns-controllers=s'  => "Controller's namespace [optional]",
+            'controller-base=s' => "Controller's base Class [optional, ControllerBase by default]",
             'help'              => 'Shows this help [optional]',
         ];
     }
@@ -79,6 +80,7 @@ class Scaffold extends Command
             'templateEngine'       => $templateEngine,
             'modelsNamespace'      => $this->getOption('ns-models'),
             'controllersNamespace' => $this->getOption('ns-controllers'),
+            'controllerBaseClass'  => $this->getOption('controller-base'),
         ]);
 
         return $scaffoldBuilder->build();

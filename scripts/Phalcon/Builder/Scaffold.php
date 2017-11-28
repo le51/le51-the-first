@@ -490,6 +490,12 @@ class Scaffold extends Component
             $code = str_replace('$useFullyQualifiedModelName$', '', $code);
         }
 
+        if ($this->options->contains('controllerBaseClass')) {
+            $code = str_replace('$controllerBaseClass$', $this->options->get('controllerBaseClass'), $code);
+        } else {
+            $code = str_replace('$controllerBaseClass$', 'ControllerBase', $code);
+        }
+
         $code = str_replace('$fullyQualifiedModelName$', $this->options->get('modelClass'), $code);
 
         $code = str_replace('$singularVar$', '$' . Utils::lowerCamelizeWithDelimiter($this->options->get('singular'), '-', true), $code);
@@ -563,7 +569,7 @@ class Scaffold extends Component
                 $code .= '<?php $this->tag->stylesheetLink("themes/base") ?>'.PHP_EOL;
                 $code .= '<div class="ui-layout" align="center">' . PHP_EOL;
             } else {
-                $code .= '<div class="row center-block">' . PHP_EOL;
+                $code .= '<div class="container">' . PHP_EOL;
             }
             $code .= "\t" . '<?php echo $this->getContent(); ?>' . PHP_EOL . '</div>';
 
@@ -604,7 +610,7 @@ class Scaffold extends Component
                 $code .= '{{ stylesheet_link("themes/base") }}'.PHP_EOL;
                 $code .= '<div class="ui-layout" align="center">' . PHP_EOL;
             } else {
-                $code .= '<div class="row center-block">' . PHP_EOL;
+                $code .= '<div class="container">' . PHP_EOL;
             }
 
             $code .= "\t" . '{{ content() }}' . PHP_EOL . '</div>';

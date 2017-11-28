@@ -130,6 +130,22 @@ class Simple extends ProjectBuilder
     }
 
     /**
+     * Create admin layout files by default
+     *
+     * @return $this
+     */
+    private function createAdminLayoutViewFile()
+    {
+        $engine = $this->options->get('templateEngine') == 'volt' ? 'volt' : 'phtml';
+
+        $getFile = $this->options->get('templatePath') . '/project/simple/views/layouts/admin.' . $engine;
+        $putFile = $this->options->get('projectPath').'app/views/layouts/admin.' . $engine;
+        $this->generateFile($getFile, $putFile);
+
+        return $this;
+    }
+
+    /**
      * Creates the configuration
      *
      * @return $this
@@ -172,6 +188,20 @@ class Simple extends ProjectBuilder
     }
 
     /**
+     * Create ControllerAdmin
+     *
+     * @return $this
+     */
+    private function createControllerAdmin()
+    {
+        $getFile = $this->options->get('templatePath') . '/project/simple/ControllerAdmin.php';
+        $putFile = $this->options->get('projectPath') . 'app/controllers/ControllerAdmin.php';
+        $this->generateFile($getFile, $putFile, $this->options->get('name'));
+
+        return $this;
+    }
+
+    /**
      * Create Bootstrap file by default of application
      *
      * @return $this
@@ -199,7 +229,9 @@ class Simple extends ProjectBuilder
             ->createBootstrapFiles()
             ->createHtaccessFiles()
             ->createControllerBase()
+            ->createControllerAdmin()
             ->createIndexViewFiles()
+            ->createAdminLayoutViewFile()
             ->createControllerFile()
             ->createHtrouterFile();
 
