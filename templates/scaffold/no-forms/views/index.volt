@@ -1,28 +1,32 @@
 {{ form("$plural$/index", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
-  <div class="page-header">
-      <div class="row">
-          <div class="col-sm-4">
-              <h1>
+
+        <div class="row">
+          <div class="col-sm-9 hidden-xs">
+              <h2 style="margin-top:0px;">
                   $plural$
-              </h1>
+              </h2>
           </div>
-          <div class="col-sm-2">{{ link_to("$plural$/new", "Create $plural$","class":"btn btn-block btn-default topten") }}</div>
-          <div class="col-sm-2">{{ link_to("$plural$/index", "Clear form","class":"btn btn-block btn-default topten") }}</div>
+          <div class="col-sm-1">{{ link_to("$plural$/new", "<i class='fa fa-plus'></i> New","class":"btn btn-block btn-default") }}</div>
           <div class="col-sm-2">
-              {{ select_static("limit",["":"limit","10":"10","20":"20","50":"50"],"class":"form-control topten") }}
+            <div class="input-group">
+              <span class="input-group-btn">
+                {{ link_to("$plural$/index", "<i class='fa fa-close'></i> Clear","class":"btn btn-block btn-default") }}
+              </span>
+              {{ select_static("limit",["":"limit","10":"10","20":"20","50":"50"],"class":"form-control") }}
+            </div>
           </div>
-          <div class="col-sm-2">{{ submit_button('Search', 'class': 'btn btn-success btn-block topten') }}</div>
-      </div>
-  </div>
+        </div>
+
 
   {{ content() }}
 
-      <table class="table table-bordered">
+      <table class="table table-striped">
           <thead>
               <tr>
       $searchHeader$
-                  <th></th>
-                  <th></th>
+                  <th colspan="2">
+                    {{ submit_button('Search', 'class': 'btn btn-success btn-block') }}
+                  </th>
               </tr>
           </thead>
           <tbody>
@@ -30,8 +34,8 @@
           {% for $singularVar$ in page.items %}
               <tr>
                   $rowColumns$
-                  <td>{{ link_to("$plural$/edit/"~$singularVar$.$pk$, "Edit") }}</td>
-                  <td>{{ link_to("$plural$/delete/"~$singularVar$.$pk$, "Delete") }}</td>
+                  <td>{{ link_to("$plural$/edit/"~$singularVar$.$pk$, '<i class="fa fa-edit"></i>') }}</td>
+                  <td>{{ link_to("$plural$/delete/"~$singularVar$.$pk$, '<i class="fa fa-times"></i>') }}</td>
               </tr>
           {% endfor %}
           {% endif %}
