@@ -7,8 +7,8 @@
               </h1>
           </div>
 
-          <div class="col-sm-2">{{ link_to("$plural$/index", "Go back","class":"btn btn-block btn-default") }}</div>
-          <div class="col-sm-2">{{ submit_button('Save', 'class': 'btn btn-success btn-block') }}</div>
+          <div class="col-sm-2">{{ link_to("$plural$/index", "Go back","class":"btn btn-block btn-default topten") }}</div>
+          <div class="col-sm-2">{{ submit_button('Save', 'class': 'btn btn-success btn-block topten') }}</div>
       </div>
   </div>
 

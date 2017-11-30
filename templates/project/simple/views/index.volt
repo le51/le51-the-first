@@ -10,6 +10,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="{{ url('img/favicon.ico') }}"/>
         <link rel="stylesheet" href="https://getbootstrap.com/docs/3.3/examples/dashboard/dashboard.css">
         <link rel="stylesheet" href="https://getbootstrap.com/docs/3.3/examples/sticky-footer-navbar/sticky-footer-navbar.css">
+        <style>.topten{margin-top:20px;}</style>
     </head>
     <body>
         <nav class="navbar navbar-inverse navbar-fixed-top">

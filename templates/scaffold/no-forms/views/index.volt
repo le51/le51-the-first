@@ -6,18 +6,17 @@
                   $plural$
               </h1>
           </div>
-          <div class="col-sm-2">{{ link_to("$plural$/new", "Create $plural$","class":"btn btn-block btn-default") }}</div>
-          <div class="col-sm-2">{{ link_to("$plural$/index", "Clear form","class":"btn btn-block btn-default") }}</div>
+          <div class="col-sm-2">{{ link_to("$plural$/new", "Create $plural$","class":"btn btn-block btn-default topten") }}</div>
+          <div class="col-sm-2">{{ link_to("$plural$/index", "Clear form","class":"btn btn-block btn-default topten") }}</div>
           <div class="col-sm-2">
-              {{ select_static("limit",["":"limit","10":"10","20":"20","50":"50"],"class":"form-control ") }}
+              {{ select_static("limit",["":"limit","10":"10","20":"20","50":"50"],"class":"form-control topten") }}
           </div>
-          <div class="col-sm-2">{{ submit_button('Search', 'class': 'btn btn-default btn-block') }}</div>
+          <div class="col-sm-2">{{ submit_button('Search', 'class': 'btn btn-success btn-block topten') }}</div>
       </div>
   </div>
 
   {{ content() }}
 
-  <div class="row">
       <table class="table table-bordered">
           <thead>
               <tr>
