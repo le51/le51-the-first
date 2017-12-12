@@ -27,6 +27,7 @@ use Phalcon\Commands\Builtin\Info;
 use Phalcon\Commands\Builtin\Model;
 use Phalcon\Commands\Builtin\Module;
 use Phalcon\Commands\Builtin\Project;
+use Phalcon\Commands\Builtin\Quickstart;
 use Phalcon\Commands\Builtin\Scaffold;
 use Phalcon\Commands\CommandsListener;
 use Phalcon\Commands\Builtin\Webtools;
@@ -65,6 +66,7 @@ try {
         Webtools::class,
         Serve::class,
         Console::class,
+        Quickstart::class,
     ];
 
     $script->loadUserScripts();

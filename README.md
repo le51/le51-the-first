@@ -1,4 +1,4 @@
-# Phalcon Customtools
+# Phalcon Custom Tools
 
 An ehanced version of Phalcon framework developper tools that fits better my needs.
 

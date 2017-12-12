@@ -25,6 +25,7 @@ use Phalcon\Text;
 use Phalcon\Builder\Scaffold;
 use Phalcon\Mvc\Controller\Base;
 use Phalcon\Builder\BuilderException;
+use Phalcon\Mvc\View;
 
 /**
  * \WebTools\Controllers\ScaffoldController
@@ -46,6 +47,9 @@ class ScaffoldController extends Base
         parent::initialize();
 
         $this->view->setVar('page_title', 'Scaffold');
+        $this->view->setRenderLevel(
+            View::LEVEL_ACTION_VIEW
+        );
     }
 
     /**
@@ -75,7 +79,7 @@ class ScaffoldController extends Base
                     sprintf('Scaffold for table "%s" was generated successfully', Text::camelize($tableName))
                 );
 
-                return $this->response->redirect('/webtools.php?_url=/scaffold/generate');
+                //return $this->response->redirect('/webtools.php?_url=/scaffold/generate');
             } catch (BuilderException $e) {
                 $this->flash->error($e->getMessage());
             } catch (\Exception $e) {

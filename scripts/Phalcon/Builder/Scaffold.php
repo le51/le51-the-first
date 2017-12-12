@@ -375,7 +375,7 @@ class Scaffold extends Component
     {
         $id = 'field' . Text::camelize($attribute);
 
-        $code = '<th>' . PHP_EOL ;
+        $code = '<th style="padding-left:0px;">' . PHP_EOL ;
         if (isset($relationField[$attribute])) {
             $code .= "\t\t" . '{{ select("' . $attribute . '", ' . $selectDefinition[$attribute]['varName'] .
                 ', "using" :[ "' . $selectDefinition[$attribute]['primaryKey'] . ',' . $selectDefinition[$attribute]['detail'] . '", "useDummy" => true], "class" : "form-control", "id" : "' . $id . '") }}';
@@ -681,7 +681,7 @@ class Scaffold extends Component
                 $code .= '{{ stylesheet_link("themes/base") }}'.PHP_EOL;
                 $code .= '<div class="ui-layout" align="center">' . PHP_EOL;
             } else {
-                $code .= '<div class="">' . PHP_EOL;
+                $code .= '<div class="ajax">' . PHP_EOL;
             }
 
             $code .= "\t" . '{{ content() }}' . PHP_EOL . '</div>';
