@@ -47,9 +47,6 @@ class ScaffoldController extends Base
         parent::initialize();
 
         $this->view->setVar('page_title', 'Scaffold');
-        $this->view->setRenderLevel(
-            View::LEVEL_ACTION_VIEW
-        );
     }
 
     /**
@@ -112,6 +109,12 @@ class ScaffoldController extends Base
         $this->tag->setDefault('modelsDir', $modelsDir);
         $this->tag->setDefault('templatesPath', $templatesPath);
         $this->tag->setDefault('schema', $this->dbUtils->resolveDbSchema());
+
+        if($this->request->isAjax()){
+            $this->view->setRenderLevel(
+                View::LEVEL_ACTION_VIEW
+            );
+        }
 
         $this->view->setVars(
             [

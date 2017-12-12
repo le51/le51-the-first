@@ -6,7 +6,7 @@
         {{ flashSession.output() }}
 
         <div class="box box-success">
-            <form id="generate" role="form" class="form-horizontal" name="generate-scaffold" method="post" action="{{ url.get("/webtools.php?_url=/scaffold/generate") }}">
+            <form id="scaffold" role="form" class="form-horizontal" name="generate-scaffold" method="post" action="{{ url.get("/webtools.php?_url=/scaffold/generate") }}">
                 <div class="box-header with-border">
                     <p class="pull-left">We will use templates from: [{{ template_path }}]</p>
                     {{ submit_button("Generate", "class": "btn btn-success pull-right ok") }}

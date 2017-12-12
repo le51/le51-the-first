@@ -29,6 +29,7 @@ use Phalcon\Builder\AllModels;
 use Phalcon\Mvc\Controller\Base;
 use Phalcon\Builder\BuilderException;
 use Phalcon\Mvc\Controller\CodemirrorTrait;
+use Phalcon\Mvc\View;
 
 /**
  * \WebTools\Controllers\ModelsController
@@ -287,6 +288,12 @@ class ModelsController extends Base
         $this->tag->setDefault('basePath', $basePath);
         $this->tag->setDefault('schema', $this->dbUtils->resolveDbSchema());
         $this->tag->setDefault('modelsDir', $modelsDir);
+
+        if($this->request->isAjax()){
+            $this->view->setRenderLevel(
+                View::LEVEL_ACTION_VIEW
+            );
+        }
 
         $this->view->setVars(
             [

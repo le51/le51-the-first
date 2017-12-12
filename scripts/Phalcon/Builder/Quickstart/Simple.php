@@ -48,6 +48,7 @@ class Simple extends QuickstartBuilder
         'app/library',
         'app/migrations',
         'app/views/index',
+        'app/views/dashboard',
         'app/views/layouts',
         'cache',
         'public',
@@ -126,6 +127,13 @@ class Simple extends QuickstartBuilder
         $putFile = $this->options->get('projectPath').'app/views/index/index.' . $engine;
         $this->generateFile($getFile, $putFile);
 
+        $getFile = $this->options->get('templatePath') . '/project/simple/views/dashboard/index.' . $engine;
+        $putFile = $this->options->get('projectPath').'app/views/dashboard/index.' . $engine;
+        $this->generateFile($getFile, $putFile);
+
+        $getFile = $this->options->get('templatePath') . '/project/simple/views/dashboard/tutorial.' . $engine;
+        $putFile = $this->options->get('projectPath').'app/views/dashboard/tutorial.' . $engine;
+        $this->generateFile($getFile, $putFile);
         return $this;
     }
 
@@ -140,6 +148,10 @@ class Simple extends QuickstartBuilder
 
         $getFile = $this->options->get('templatePath') . '/project/simple/views/layouts/admin.' . $engine;
         $putFile = $this->options->get('projectPath').'app/views/layouts/admin.' . $engine;
+        $this->generateFile($getFile, $putFile);
+
+        $getFile = $this->options->get('templatePath') . '/project/simple/views/layouts/base.' . $engine;
+        $putFile = $this->options->get('projectPath').'app/views/layouts/base.' . $engine;
         $this->generateFile($getFile, $putFile);
 
         return $this;
@@ -212,6 +224,9 @@ class Simple extends QuickstartBuilder
         $putFile = $this->options->get('projectPath') . 'app/controllers/ControllerAdmin.php';
         $this->generateFile($getFile, $putFile, $this->options->get('name'));
 
+        $getFile = $this->options->get('templatePath') . '/project/simple/DashboardController.php';
+        $putFile = $this->options->get('projectPath') . 'app/controllers/DashboardController.php';
+        $this->generateFile($getFile, $putFile, $this->options->get('name'));
         return $this;
     }
 
