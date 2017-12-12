@@ -4,31 +4,27 @@ use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 $useFullyQualifiedModelName$
 
-class $className$Controller extends $controllerBaseClass$
+class $className$Controller extends ControllerBase
 {
     /**
      * Index action
      */
     public function indexAction()
     {
-      $numberPage = 1;
+        $this->persistent->parameters = null;
+    }
+
+    /**
+     * Searches for $plural$
+     */
+    public function searchAction()
+    {
+        $numberPage = 1;
         if ($this->request->isPost()) {
             $query = Criteria::fromInput($this->di, '$fullyQualifiedModelName$', $_POST);
             $this->persistent->parameters = $query->getParams();
-            if($this->request->getPost('limit'))
-                {$limit = $this->request->getPost('limit');}
-            else $limit = 10;
-            $this->persistent->limit = $limit;
-        } elseif ($this->request->getQuery("page", "int")) {
+        } else {
             $numberPage = $this->request->getQuery("page", "int");
-        }
-        else {
-            $this->persistent->parameters = null;
-            $this->persistent->limit = 10;
-        }
-
-        if ($this->persistent->limit) {
-            $limit = $this->persistent->limit;
         }
 
         $parameters = $this->persistent->parameters;
@@ -49,22 +45,13 @@ class $className$Controller extends $controllerBaseClass$
             return;
         }
 
+        $paginator = new Paginator([
+            'data' => $pluralVar$,
+            'limit'=> 10,
+            'page' => $numberPage
+        ]);
 
-      $paginator = new Paginator([
-          'data' => $pluralVar$,
-          'limit'=> $limit,
-          'page' => $numberPage
-      ]);
-
-      $this->view->page = $paginator->getPaginate();
-      $bind = $this->persistent->parameters['bind'];
-      if($bind){
-        foreach ($bind as $key => $value) {
-          $this->tag->setDefault($key, trim($value,"%"));
-        }
-      }
-
-      $this->tag->setDefault("limit", $limit);
+        $this->view->page = $paginator->getPaginate();
     }
 
     /**

@@ -130,22 +130,6 @@ class Simple extends ProjectBuilder
     }
 
     /**
-     * Create admin layout files by default
-     *
-     * @return $this
-     */
-    private function createAdminLayoutViewFile()
-    {
-        $engine = $this->options->get('templateEngine') == 'volt' ? 'volt' : 'phtml';
-
-        $getFile = $this->options->get('templatePath') . '/project/simple/views/layouts/admin.' . $engine;
-        $putFile = $this->options->get('projectPath').'app/views/layouts/admin.' . $engine;
-        $this->generateFile($getFile, $putFile);
-
-        return $this;
-    }
-
-    /**
      * Creates the configuration
      *
      * @return $this
@@ -174,20 +158,6 @@ class Simple extends ProjectBuilder
     }
 
     /**
-     * Create IndexController
-     *
-     * @return $this
-     */
-    private function createIndexController()
-    {
-        $getFile = $this->options->get('templatePath') . '/project/simple/IndexController.php';
-        $putFile = $this->options->get('projectPath') . 'app/controllers/IndexController.php';
-        $this->generateFile($getFile, $putFile, $this->options->get('name'));
-
-        return $this;
-    }
-
-    /**
      * Create ControllerBase
      *
      * @return $this
@@ -196,20 +166,6 @@ class Simple extends ProjectBuilder
     {
         $getFile = $this->options->get('templatePath') . '/project/simple/ControllerBase.php';
         $putFile = $this->options->get('projectPath') . 'app/controllers/ControllerBase.php';
-        $this->generateFile($getFile, $putFile, $this->options->get('name'));
-
-        return $this;
-    }
-
-    /**
-     * Create ControllerAdmin
-     *
-     * @return $this
-     */
-    private function createControllerAdmin()
-    {
-        $getFile = $this->options->get('templatePath') . '/project/simple/ControllerAdmin.php';
-        $putFile = $this->options->get('projectPath') . 'app/controllers/ControllerAdmin.php';
         $this->generateFile($getFile, $putFile, $this->options->get('name'));
 
         return $this;
@@ -242,12 +198,9 @@ class Simple extends ProjectBuilder
             ->createConfig()
             ->createBootstrapFiles()
             ->createHtaccessFiles()
-            ->createIndexController()
             ->createControllerBase()
-            ->createControllerAdmin()
             ->createIndexViewFiles()
-            ->createAdminLayoutViewFile()
-            //->createControllerFile()
+            ->createControllerFile()
             ->createHtrouterFile();
 
         $this->options->contains('enableWebTools') && Tools::install($this->options->get('projectPath'));

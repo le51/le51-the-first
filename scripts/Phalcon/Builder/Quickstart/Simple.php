@@ -51,11 +51,11 @@ class Simple extends QuickstartBuilder
         'app/views/layouts',
         'cache',
         'public',
-        'public/img',
+        /*'public/img',
         'public/css',
         'public/temp',
         'public/files',
-        'public/js',
+        'public/js',*/
         '.phalcon'
     ];
 
@@ -230,6 +230,27 @@ class Simple extends QuickstartBuilder
     }
 
     /**
+    * Copy all assets files
+    *
+    * @return $this
+    */
+    private function createAssets()
+    {
+      $assetsSrc = $this->options->get('templatePath') . '/assets/';
+      $assetsDest = $this->options->get('projectPath') . 'public/';
+      foreach (
+       $iterator = new \RecursiveIteratorIterator(
+        new \RecursiveDirectoryIterator($assetsSrc, \RecursiveDirectoryIterator::SKIP_DOTS),
+        \RecursiveIteratorIterator::SELF_FIRST) as $item
+      ) {
+        if ($item->isDir()) {
+          mkdir($assetsDest . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
+        } else {
+          copy($item, $assetsDest . DIRECTORY_SEPARATOR . $iterator->getSubPathName());
+        }
+      }
+    }
+    /**
      * Build project
      *
      * @return bool
@@ -248,7 +269,8 @@ class Simple extends QuickstartBuilder
             ->createIndexViewFiles()
             ->createAdminLayoutViewFile()
             //->createControllerFile()
-            ->createHtrouterFile();
+            ->createHtrouterFile()
+            ->createAssets();
 
         $this->options->contains('enableWebTools') && Tools::install($this->options->get('projectPath'));
 

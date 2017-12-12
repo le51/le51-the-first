@@ -1,5 +1,5 @@
 <?php
-namespace Phalcon\Builder\Project;
+
 /*
   +------------------------------------------------------------------------+
   | Phalcon Developer Tools                                                |
@@ -19,7 +19,7 @@ namespace Phalcon\Builder\Project;
   +------------------------------------------------------------------------+
 */
 
-
+namespace Phalcon\Builder\Project;
 
 use Phalcon\Builder\Options;
 
