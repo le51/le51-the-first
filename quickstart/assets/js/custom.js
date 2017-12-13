@@ -87,8 +87,27 @@ $(document).ready(function() {
     height: 300,                 // set editor height
     minHeight: null,             // set minimum height of editor
     maxHeight: null,
+    toolbar: [
+        // [groupName, [list of button]]
+        ['style', ['style', 'bold', 'italic', 'underline', 'clear']],
+        ['font', ['strikethrough', 'superscript', 'subscript']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['insert', ['picture', 'video', 'hr', 'table', 'link']]
+    ]
   });
-});
+  $('#fieldDescription').summernote({
+    height: 300,                 // set editor height
+    minHeight: null,             // set minimum height of editor
+    maxHeight: null,
+    toolbar: [
+        // [groupName, [list of button]]
+        ['style', ['style', 'bold', 'italic', 'underline', 'clear']],
+        ['font', ['strikethrough', 'superscript', 'subscript']],
+        ['para', ['ul', 'ol', 'paragraph']],
+        ['insert', ['picture', 'video', 'hr', 'table', 'link']]
+    ]
+  });
+
 
 $(document).ready(function() {
   $('pre code').each(function(i, block) {
