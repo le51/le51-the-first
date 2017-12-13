@@ -19,11 +19,13 @@ class IndexController extends ControllerBase
             if($this->request->getPost('password') == $this->config->application->password){
                 $this->session->auth = true;
                 //$this->view->pick('dashboard/index');
-                $this->dispatcher->forward([
+                /*$this->dispatcher->forward([
                     'controller' => 'dashboard',
                     'action' => 'index'
-                ]);
-                $this->flash->success('You have been successfuly logged in');
+                ]);*/
+                $this->response->redirect('dashboard');
+                // in case of redirect flash message won't work
+                //$this->flash->success('You have been successfuly logged in');
             } else {
                 $this->session->auth = false;
                 $this->dispatcher->forward([

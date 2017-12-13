@@ -1,4 +1,4 @@
-{{ form("$plural$/save", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
+{{ form("$plural$/create", "method":"post", "autocomplete" : "off", "class" : "form-horizontal") }}
 
 <div class="row">
   <div class="col-sm-10 hidden-xs">
