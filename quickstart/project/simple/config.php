@@ -30,5 +30,9 @@ return new \Phalcon\Config([
         // of the webpspace.  This will break if the public/index.php entry point is moved or
         // possibly if the web server rewrite rules are changed. This can also be set to a static path.
         'baseUri'        => preg_replace('/public([\/\\\\])index.php$/', '', $_SERVER["PHP_SELF"]),
+        // problems with css and js loadig, if you are accessing to the webtools 
+        // on address http://localhost/phalcon/myapp/webtools.php 
+        // then uncomment (and adapt) line below
+        // 'staticUri'       => '/phalcon/myapp/',
     ]
 ]);
